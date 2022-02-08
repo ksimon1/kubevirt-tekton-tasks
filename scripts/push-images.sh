@@ -8,19 +8,29 @@ if [ -z "${IMG_TAG}" ]; then
 fi
 
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+REPO_DIR="$(realpath "${SCRIPT_DIR}/..")"
 
 source "${SCRIPT_DIR}/release-var.sh"
 source "${SCRIPT_DIR}/common.sh"
 
-for TASK_NAME in ${TASK_NAMES[*]}; do
-    if echo "${TASK_NAME}" | grep -vqE "^(${EXCLUDED_NON_IMAGE_MODULES})$"; then
-    if [ ! -d  "${TASK_NAME}" ]; then
-        continue
-    fi
-    visit "${TASK_NAME}"
-        IMAGE_NAME_AND_TAG="tekton-task-${TASK_NAME}:${IMG_TAG}"
-        export IMAGE="${REGISTRY}/${REPOSITORY}/${IMAGE_NAME_AND_TAG}"
-        podman push "${IMAGE}" --tls-verify=false
-    leave
-    fi
-done
+visit "${REPO_DIR}"
+  visit modules
+    TASK_NAMES=(*)
+    for TASK_NAME in ${TASK_NAMES[*]}; do
+        if echo "${TASK_NAME}" | grep -vqE "^(${EXCLUDED_NON_IMAGE_MODULES})$"; then
+            if [ ! -d  "${TASK_NAME}" ]; then
+                continue
+            fi
+            visit "${TASK_NAME}"
+                IMAGE_NAME_AND_TAG="tekton-task-${TASK_NAME}:${IMG_TAG}"
+                export IMAGE="${REGISTRY}/${REPOSITORY}/${IMAGE_NAME_AND_TAG}"
+
+                echo "Pushing ${IMAGE}"
+                
+                podman push "${IMAGE}" --tls-verify=false
+            leave
+        fi
+    done
+  leave
+leave
+

@@ -16,11 +16,7 @@ source "${SCRIPT_DIR}/common.sh"
 
 visit "${REPO_DIR}"
   visit modules
-    if [[ $# -eq 0 ]]; then
-      TASK_NAMES=(*)
-    else
-      TASK_NAMES=("$@")
-    fi
+    TASK_NAMES=(*)
     for TASK_NAME in ${TASK_NAMES[*]}; do
       if echo "${TASK_NAME}" | grep -vqE "^(${EXCLUDED_NON_IMAGE_MODULES})$"; then
         if [ ! -d  "${TASK_NAME}" ]; then

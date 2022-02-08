@@ -51,7 +51,7 @@ build-images:
 push-images:
 	./scripts/push-images.sh
 
-release: build-images push-images
+release: generate-yaml-tasks build-images push-images
 
 vendor:
 	./scripts/vendor.sh
