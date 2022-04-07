@@ -23,51 +23,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
 
-      - name: Publish tekton images and generate release manifests
-        run: |
-          echo ${{ secrets.QUAY_PASSWORD }} | podman login -u="${{ secrets.QUAY_BOT }}" --password-stdin quay.io
-          export RELEASE_VERSION="${{ steps.get_release.outputs.tag_name }}"
-          make release
-
-      - name: Upload kubernetes manifest
-        id: kubernetes-manifest 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: manifests/kubernetes/kubevirt-tekton-tasks-kubernetes.yaml
-          asset_name: kubevirt-tekton-tasks-kubernetes.yaml
-          asset_content_type: text/plain
-
-      - name: Upload okd manifest
-        id: okd-manifest  
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: manifests/okd/kubevirt-tekton-tasks-okd.yaml
-          asset_name: kubevirt-tekton-tasks-okd.yaml
-          asset_content_type: text/plain
-
-      - name: Set output variables
-        id: vars
-        run: |
-          # If GITHUB_FORK_USER is changed, a new access token should be set as a repo secret (ACTIONS_TOKEN)
-          echo ::set-output name=GITHUB_FORK_USER::"ksimon1"
-          echo ::set-output name=RELEASE_VERSION::"${{ steps.get_release.outputs.tag_name }}"
-          echo ::set-output name=GH_USER::"Kubevirt-Tekton-tasks Release Automation"
-          echo ::set-output name=GH_EMAIL::"ksimon@redhat.com"
-
       - name: Upload tekton tasks manifests to tekton tasks operator
         run: |
+          export RELEASE_VERSION=${{ steps.get_release.outputs.tag_name }}
+          # If GITHUB_FORK_USER is changed, a new access token should be set as a repo secret (ACTIONS_TOKEN)
+          export GITHUB_FORK_USER=ksimon1
           make generate-yaml-tasks
           # Set git configs to sign the commit
-          git config --global user.email ${{ steps.vars.outputs.GH_EMAIL }}
-          git config --global user.name ${{ steps.vars.outputs.GH_USER }}
+          git config --global user.email "ksimon@redhat.com"
+          git config --global user.name "Kubevirt-Tekton-tasks Release Automation"
           # Clone the operator repo with a token to allow pushing before creating a PR
-          git clone https://${{ steps.vars.outputs.GITHUB_FORK_USER }}:${{ secrets.ACTIONS_TOKEN }}@github.com/${{ steps.vars.outputs.GITHUB_FORK_USER }}/tekton-tasks-operator
+          git clone https://${GITHUB_FORK_USER}:${{ secrets.ACTIONS_TOKEN }}@github.com/${GITHUB_FORK_USER}/tekton-tasks-operator
           # Authenticate with gh cli
           echo ${{ secrets.ACTIONS_TOKEN }} > token.txt
           gh auth login --with-token < token.txt
@@ -77,21 +43,21 @@ jobs:
           git fetch upstream
           git checkout main
           git rebase upstream/main
-          git checkout -b update-tekton-tasks-manifests-${{ steps.vars.outputs.RELEASE_VERSION }}
-          cp ../manifests/okd/kubevirt-tekton-tasks-okd.yaml data/tekton-tasks/okd/kubevirt-tekton-tasks-okd-${{ steps.vars.outputs.RELEASE_VERSION }}.yaml
-          cp ../manifests/kubernetes/kubevirt-tekton-tasks-kubernetes.yaml data/tekton-tasks/kubernetes/kubevirt-tekton-tasks-kubernetes-${{ steps.vars.outputs.RELEASE_VERSION }}.yaml
-          sed -i "s/\bTektonTasksVersion\s*=.*/TektonTasksVersion = \"${VERSION}\"/g" pkg/operands/version.go
+          git checkout -b update-tekton-tasks-manifests-${RELEASE_VERSION}
+          cp ../manifests/okd/kubevirt-tekton-tasks-okd.yaml data/tekton-tasks/okd/kubevirt-tekton-tasks-okd-${RELEASE_VERSION}.yaml
+          cp ../manifests/kubernetes/kubevirt-tekton-tasks-kubernetes.yaml data/tekton-tasks/kubernetes/kubevirt-tekton-tasks-kubernetes-${RELEASE_VERSION}.yaml
+          sed -i "s/\bTektonTasksVersion\s*=.*/TektonTasksVersion = \"${RELEASE_VERSION}\"/g" pkg/operands/version.go
         
           git add .
-          git commit -sm "Update tekton tasks manifests to version ${{ steps.vars.outputs.RELEASE_VERSION }}"
-          git push --set-upstream origin update-tekton-tasks-manifests-${{ steps.vars.outputs.RELEASE_VERSION }}
+          git commit -sm "Update tekton tasks manifests to version ${RELEASE_VERSION}"
+          git push --set-upstream origin update-tekton-tasks-manifests-${RELEASE_VERSION}
           # Create a new PR in the tekton-tasks-operator repo
           gh pr create --repo ksimon1/tekton-tasks-operator \
             --base main \
-            --head ${{ steps.vars.outputs.GITHUB_FORK_USER }}:update-tekton-tasks-manifests-${{ steps.vars.outputs.RELEASE_VERSION }} \
-            --title "Update tekton tasks manifests to version ${{ steps.vars.outputs.RELEASE_VERSION }}" \
+            --head ${GITHUB_FORK_USER}:update-tekton-tasks-manifests-${RELEASE_VERSION} \
+            --title "Update tekton tasks manifests to version ${RELEASE_VERSION}" \
             --body "$(cat << EOF
-          Update tekton tasks manifests to version ${{ steps.vars.outputs.RELEASE_VERSION }} 
+          Update tekton tasks manifests to version ${RELEASE_VERSION}
           **Release note**:
           \`\`\`release-note
           NONE
@@ -102,11 +68,14 @@ jobs:
 
       - name: Update tekton tasks manifests
         run: |
+          export RELEASE_VERSION=${{ steps.get_release.outputs.tag_name }}
+          # If GITHUB_FORK_USER is changed, a new access token should be set as a repo secret (ACTIONS_TOKEN)
+          export GITHUB_FORK_USER=ksimon1
           # Set git configs to sign the commit
-          git config --global user.email ${{ steps.vars.outputs.GH_EMAIL }}
-          git config --global user.name ${{ steps.vars.outputs.GH_USER }}
+          git config --global user.email "ksimon@redhat.com"
+          git config --global user.name "Kubevirt-Tekton-tasks Release Automation"
           # Clone the operator repo with a token to allow pushing before creating a PR
-          git clone https://${{ steps.vars.outputs.GITHUB_FORK_USER }}:${{ secrets.ACTIONS_TOKEN }}@github.com/${{ steps.vars.outputs.GITHUB_FORK_USER }}/kubevirt-tekton-tasks
+          git clone https://${GITHUB_FORK_USER}:${{ secrets.ACTIONS_TOKEN }}@github.com/${GITHUB_FORK_USER}/kubevirt-tekton-tasks
           # Authenticate with gh cli
           echo ${{ secrets.ACTIONS_TOKEN }} > token.txt
           gh auth login --with-token < token.txt
@@ -116,19 +85,19 @@ jobs:
           git fetch upstream
           git checkout main
           git rebase upstream/main
-          git checkout -b update-tekton-tasks-manifests-${{ steps.vars.outputs.RELEASE_VERSION }}
-          sed -i "s/export RELEASE_VERSION.*=.*/export RELEASE_VERSION ?=${{ steps.vars.outputs.RELEASE_VERSION }}/g" scripts/makefile-snippets/makefile-release.mk
+          git checkout -b update-tekton-tasks-manifests-${RELEASE_VERSION}
+          sed -i "s/export RELEASE_VERSION.*=.*/export RELEASE_VERSION ?=${RELEASE_VERSION}/g" scripts/makefile-snippets/makefile-release.mk
           make generate-yaml-tasks
           git add .
-          git commit -sm "Update tekton tasks manifests to version ${{ steps.vars.outputs.RELEASE_VERSION }}"
-          git push --set-upstream origin update-tekton-tasks-manifests-${{ steps.vars.outputs.RELEASE_VERSION }}
+          git commit -sm "Update tekton tasks manifests to version ${RELEASE_VERSION}"
+          git push --set-upstream origin update-tekton-tasks-manifests-${RELEASE_VERSION}
           # Create a new PR in the kubevirt-tekton-tasks repo
           gh pr create --repo ksimon1/kubevirt-tekton-tasks \
             --base main \
-            --head ${{ steps.vars.outputs.GITHUB_FORK_USER }}:update-tekton-tasks-manifests-${{ steps.vars.outputs.RELEASE_VERSION }} \
-            --title "Update tekton tasks manifests to version ${{ steps.vars.outputs.RELEASE_VERSION }}" \
+            --head ${GITHUB_FORK_USER}:update-tekton-tasks-manifests-${RELEASE_VERSION} \
+            --title "Update tekton tasks manifests to version ${RELEASE_VERSION}" \
             --body "$(cat << EOF
-          Update tekton tasks manifests to version ${{ steps.vars.outputs.RELEASE_VERSION }} 
+          Update tekton tasks manifests to version ${RELEASE_VERSION} 
           **Release note**:
           \`\`\`release-note
           NONE
