@@ -37,7 +37,7 @@ var _ = Describe("Create DataVolume", func() {
 		Entry("empty dv", &testconfigs.CreateDVTestConfig{
 			TaskRunTestConfig: testconfigs.TaskRunTestConfig{
 				ServiceAccount: CreateDataVolumeFromManifestServiceAccountName,
-				ExpectedLogs:   "manifest does not contain DataVolume kind",
+				ExpectedLogs:   "manifest does not contain DataVolume or DataSource kind",
 			},
 			TaskData: testconfigs.CreateDVTaskData{
 				Datavolume: nil,
@@ -46,7 +46,7 @@ var _ = Describe("Create DataVolume", func() {
 		Entry("malformed dv", &testconfigs.CreateDVTestConfig{
 			TaskRunTestConfig: testconfigs.TaskRunTestConfig{
 				ServiceAccount: CreateDataVolumeFromManifestServiceAccountName,
-				ExpectedLogs:   "manifest does not contain DataVolume kind",
+				ExpectedLogs:   "manifest does not contain DataVolume or DataSource kind",
 			},
 			TaskData: testconfigs.CreateDVTaskData{
 				Datavolume: datavolume.NewBlankDataVolume("malformed").WithoutTypeMeta().Build(),
