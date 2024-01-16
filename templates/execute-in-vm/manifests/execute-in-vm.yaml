@@ -3,18 +3,12 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
-    task.kubevirt.io/associatedServiceAccount: {{ sa_name }}
-    vmNamespace.params.task.kubevirt.io/type: {{ task_param_types.namespace }}
-    secretName.params.task.kubevirt.io/type: {{ task_param_types.execute_in_vm_secret }}
-    script.params.task.kubevirt.io/type: {{ task_param_types.script }}
-{% if is_cleanup %}
-    delete.params.task.kubevirt.io/type: {{ task_param_types.boolean }}
-    stop.params.task.kubevirt.io/type: {{ task_param_types.boolean }}
-    timeout.params.task.kubevirt.io/type: {{ task_param_types.duration }}
-{% endif %}
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
   labels:
-    task.kubevirt.io/type: {{ task_name }}
-    task.kubevirt.io/category: {{ task_category }}
+    app.kubernetes.io/version: {{ version }}
+    artifacthub.io/category: {{ task_category }}
   name: {{ task_name }}
 spec:
   params:

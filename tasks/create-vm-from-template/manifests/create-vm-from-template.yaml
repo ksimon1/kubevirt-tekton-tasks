@@ -3,6 +3,9 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
     task.kubevirt.io/associatedServiceAccount: create-vm-from-template-task
     tekton.dev/deprecated: "true"
     templateName.params.task.kubevirt.io/type: vm-template-name
@@ -21,8 +24,9 @@ metadata:
     ownPersistentVolumeClaims.params.task.kubevirt.io/apiVersion: v1
     startVM.params.task.kubevirt.io/type: boolean
   labels:
+    app.kubernetes.io/version: v0.17.0
     task.kubevirt.io/type: create-vm-from-template
-    task.kubevirt.io/category: create-vm
+    task.kubevirt.io/category: Virtual Machines, KubeVirt
   name: create-vm-from-template
 spec:
   params:

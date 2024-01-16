@@ -3,10 +3,14 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
     task.kubevirt.io/associatedServiceAccount: modify-windows-iso-file-task
   labels:
+    app.kubernetes.io/version: v0.17.0
     task.kubevirt.io/type: modify-windows-iso-file
-    task.kubevirt.io/category: modify-windows-iso-file
+    task.kubevirt.io/category: Virtual Machines, KubeVirt
   name: modify-windows-iso-file
 spec:
   params:

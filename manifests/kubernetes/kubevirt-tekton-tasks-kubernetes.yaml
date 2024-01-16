@@ -3,6 +3,9 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
     task.kubevirt.io/associatedServiceAccount: cleanup-vm-task
     vmNamespace.params.task.kubevirt.io/type: namespace
     secretName.params.task.kubevirt.io/type: execute-in-vm-secret
@@ -11,8 +14,9 @@ metadata:
     stop.params.task.kubevirt.io/type: boolean
     timeout.params.task.kubevirt.io/type: duration
   labels:
+    app.kubernetes.io/version: v0.17.0
     task.kubevirt.io/type: cleanup-vm
-    task.kubevirt.io/category: execute-in-vm
+    task.kubevirt.io/category: Virtual Machines, KubeVirt
   name: cleanup-vm
 spec:
   params:
@@ -135,6 +139,9 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
     task.kubevirt.io/associatedServiceAccount: create-vm-from-manifest-task
     manifest.params.task.kubevirt.io/type: resource-yaml
     manifest.params.task.kubevirt.io/kind: VirtualMachine
@@ -150,8 +157,9 @@ metadata:
     ownPersistentVolumeClaims.params.task.kubevirt.io/apiVersion: v1
     startVM.params.task.kubevirt.io/type: boolean
   labels:
+    app.kubernetes.io/version: v0.17.0
     task.kubevirt.io/type: create-vm-from-manifest
-    task.kubevirt.io/category: create-vm
+    task.kubevirt.io/category: Virtual Machines, KubeVirt
   name: create-vm-from-manifest
 spec:
   params:
@@ -254,13 +262,17 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
     pvc.params.task.kubevirt.io/kind: PersistentVolumeClaim
     pvc.params.task.kubevirt.io/apiVersion: v1
     customizeCommands.params.task.kubevirt.io/type: script
     verbose.params.task.kubevirt.io/type: boolean
   labels:
+    app.kubernetes.io/version: v0.17.0
     task.kubevirt.io/type: disk-virt-customize
-    task.kubevirt.io/category: disk-virt-customize
+    task.kubevirt.io/category: Virtual Machines, KubeVirt
   name: disk-virt-customize
 spec:
   params:
@@ -382,13 +394,17 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
     pvc.params.task.kubevirt.io/kind: PersistentVolumeClaim
     pvc.params.task.kubevirt.io/apiVersion: v1
     sysprepCommands.params.task.kubevirt.io/type: script
     verbose.params.task.kubevirt.io/type: boolean
   labels:
+    app.kubernetes.io/version: v0.17.0
     task.kubevirt.io/type: disk-virt-sysprep
-    task.kubevirt.io/category: disk-virt-sysprep
+    task.kubevirt.io/category: Virtual Machines, KubeVirt
   name: disk-virt-sysprep
 spec:
   params:
@@ -510,13 +526,17 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
     task.kubevirt.io/associatedServiceAccount: execute-in-vm-task
     vmNamespace.params.task.kubevirt.io/type: namespace
     secretName.params.task.kubevirt.io/type: execute-in-vm-secret
     script.params.task.kubevirt.io/type: script
   labels:
+    app.kubernetes.io/version: v0.17.0
     task.kubevirt.io/type: execute-in-vm
-    task.kubevirt.io/category: execute-in-vm
+    task.kubevirt.io/category: Virtual Machines, KubeVirt
   name: execute-in-vm
 spec:
   params:
@@ -620,6 +640,9 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
     task.kubevirt.io/associatedServiceAccount: generate-ssh-keys-task
     publicKeySecretName.params.task.kubevirt.io/kind: Secret
     publicKeySecretName.params.task.kubevirt.io/apiVersion: v1
@@ -629,8 +652,9 @@ metadata:
     privateKeySecretNamespace.params.task.kubevirt.io/type: namespace
     privateKeyConnectionOptions.params.task.kubevirt.io/type: private-key-options-array
   labels:
+    app.kubernetes.io/version: v0.17.0
     task.kubevirt.io/type: generate-ssh-keys
-    task.kubevirt.io/category: generate-ssh-keys
+    task.kubevirt.io/category: Virtual Machines, KubeVirt
   name: generate-ssh-keys
 spec:
   params:
@@ -728,13 +752,17 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
     task.kubevirt.io/associatedServiceAccount: modify-data-object-task
     manifest.params.task.kubevirt.io/type: resource-yaml
     manifest.params.task.kubevirt.io/apiVersion: cdi.kubevirt.io/v1beta1
     waitForSuccess.params.task.kubevirt.io/type: boolean
   labels:
+    app.kubernetes.io/version: v0.17.0
     task.kubevirt.io/type: modify-data-object
-    task.kubevirt.io/category: modify-data-object
+    task.kubevirt.io/category: Virtual Machines, KubeVirt
   name: modify-data-object
 spec:
   description: >-
@@ -848,10 +876,14 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
     task.kubevirt.io/associatedServiceAccount: modify-windows-iso-file-task
   labels:
+    app.kubernetes.io/version: v0.17.0
     task.kubevirt.io/type: modify-windows-iso-file
-    task.kubevirt.io/category: modify-windows-iso-file
+    task.kubevirt.io/category: Virtual Machines, KubeVirt
   name: modify-windows-iso-file
 spec:
   params:
@@ -967,11 +999,15 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
     task.kubevirt.io/associatedServiceAccount: wait-for-vmi-status-task
     vmiNamespace.params.task.kubevirt.io/type: namespace
   labels:
+    app.kubernetes.io/version: v0.17.0
     task.kubevirt.io/type: wait-for-vmi-status
-    task.kubevirt.io/category: wait-for-vmi-status
+    task.kubevirt.io/category: Virtual Machines, KubeVirt
   name: wait-for-vmi-status
 spec:
   params:

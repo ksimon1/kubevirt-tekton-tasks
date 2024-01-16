@@ -1,4 +1,5 @@
 task_name: copy-template
-task_category: copy-template
+file_name: copy-template
+task_category: "Virtual Machines, KubeVirt"
 main_image: quay.io/kubevirt/tekton-tasks
 is_okd: true

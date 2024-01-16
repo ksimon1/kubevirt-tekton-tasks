@@ -3,18 +3,13 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
     tekton.dev/deprecated: "true"
-    task.kubevirt.io/associatedServiceAccount: {{ sa_name }}
-    sourceTemplateName.params.task.kubevirt.io/kind: {{ task_param_types.template_kind }}
-    sourceTemplateName.params.task.kubevirt.io/apiVersion: {{ task_param_types.template_version }}
-    sourceTemplateNamespace.params.task.kubevirt.io/type: {{ task_param_types.namespace }}
-    targetTemplateName.params.task.kubevirt.io/kind: {{ task_param_types.template_kind }}
-    targetTemplateName.params.task.kubevirt.io/apiVersion: {{ task_param_types.template_version }}
-    targetTemplateNamespace.params.task.kubevirt.io/type: {{ task_param_types.namespace }}
-    allowReplace.params.task.kubevirt.io/type: {{ task_param_types.boolean }}
   labels:
-    task.kubevirt.io/type: {{ task_name }}
-    task.kubevirt.io/category: {{ task_category }}
+    app.kubernetes.io/version: {{ version }}
+    artifacthub.io/category: {{ task_category }}
   name: {{ task_name }}
 spec:
   params:

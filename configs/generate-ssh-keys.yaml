@@ -1,3 +1,4 @@
 task_name: generate-ssh-keys
-task_category: generate-ssh-keys
+file_name: generate-ssh-keys
+task_category: "Virtual Machines, KubeVirt"
 main_image: quay.io/kubevirt/tekton-tasks

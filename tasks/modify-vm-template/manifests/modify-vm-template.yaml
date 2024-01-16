@@ -3,6 +3,9 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
     tekton.dev/deprecated: "true"
     task.kubevirt.io/associatedServiceAccount: modify-vm-template-task
     templateName.params.task.kubevirt.io/kind: Template
@@ -16,8 +19,9 @@ metadata:
     deleteTemplateParameters.params.task.kubevirt.io/type: boolean
     deleteTemplate.params.task.kubevirt.io/type: boolean
   labels:
+    app.kubernetes.io/version: v0.17.0
     task.kubevirt.io/type: modify-vm-template
-    task.kubevirt.io/category: modify-vm-template
+    task.kubevirt.io/category: Virtual Machines, KubeVirt
   name: modify-vm-template
 spec:
   params:

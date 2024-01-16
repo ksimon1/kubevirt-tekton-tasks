@@ -3,13 +3,17 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
     task.kubevirt.io/associatedServiceAccount: execute-in-vm-task
     vmNamespace.params.task.kubevirt.io/type: namespace
     secretName.params.task.kubevirt.io/type: execute-in-vm-secret
     script.params.task.kubevirt.io/type: script
   labels:
+    app.kubernetes.io/version: v0.17.0
     task.kubevirt.io/type: execute-in-vm
-    task.kubevirt.io/category: execute-in-vm
+    task.kubevirt.io/category: Virtual Machines, KubeVirt
   name: execute-in-vm
 spec:
   params:

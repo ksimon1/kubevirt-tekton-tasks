@@ -1,3 +1,4 @@
 task_name: modify-data-object
-task_category: modify-data-object
+file_name: modify-data-object
+task_category: "Virtual Machines, KubeVirt"
 main_image: quay.io/kubevirt/tekton-tasks

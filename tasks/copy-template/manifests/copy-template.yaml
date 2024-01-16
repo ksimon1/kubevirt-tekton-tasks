@@ -3,6 +3,9 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
     tekton.dev/deprecated: "true"
     task.kubevirt.io/associatedServiceAccount: copy-template-task
     sourceTemplateName.params.task.kubevirt.io/kind: Template
@@ -13,8 +16,9 @@ metadata:
     targetTemplateNamespace.params.task.kubevirt.io/type: namespace
     allowReplace.params.task.kubevirt.io/type: boolean
   labels:
+    app.kubernetes.io/version: v0.17.0
     task.kubevirt.io/type: copy-template
-    task.kubevirt.io/category: copy-template
+    task.kubevirt.io/category: Virtual Machines, KubeVirt
   name: copy-template
 spec:
   params:

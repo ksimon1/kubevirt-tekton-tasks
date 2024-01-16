@@ -3,17 +3,12 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
-    task.kubevirt.io/associatedServiceAccount: {{ sa_name }}
-    publicKeySecretName.params.task.kubevirt.io/kind: {{ task_param_types.secret_kind }}
-    publicKeySecretName.params.task.kubevirt.io/apiVersion: {{ task_param_types.v1_version }}
-    publicKeySecretNamespace.params.task.kubevirt.io/type: {{ task_param_types.namespace }}
-    privateKeySecretName.params.task.kubevirt.io/kind: {{ task_param_types.secret_kind }}
-    privateKeySecretName.params.task.kubevirt.io/apiVersion: {{ task_param_types.v1_version }}
-    privateKeySecretNamespace.params.task.kubevirt.io/type: {{ task_param_types.namespace }}
-    privateKeyConnectionOptions.params.task.kubevirt.io/type: {{ task_param_types.private_key_options_array }}
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
   labels:
-    task.kubevirt.io/type: {{ task_name }}
-    task.kubevirt.io/category: {{ task_category }}
+    app.kubernetes.io/version: {{ version }}
+    artifacthub.io/category: {{ task_category }}
   name: {{ task_name }}
 spec:
   params:

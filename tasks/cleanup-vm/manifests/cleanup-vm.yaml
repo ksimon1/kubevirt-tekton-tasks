@@ -3,6 +3,9 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
     task.kubevirt.io/associatedServiceAccount: cleanup-vm-task
     vmNamespace.params.task.kubevirt.io/type: namespace
     secretName.params.task.kubevirt.io/type: execute-in-vm-secret
@@ -11,8 +14,9 @@ metadata:
     stop.params.task.kubevirt.io/type: boolean
     timeout.params.task.kubevirt.io/type: duration
   labels:
+    app.kubernetes.io/version: v0.17.0
     task.kubevirt.io/type: cleanup-vm
-    task.kubevirt.io/category: execute-in-vm
+    task.kubevirt.io/category: Virtual Machines, KubeVirt
   name: cleanup-vm
 spec:
   params:

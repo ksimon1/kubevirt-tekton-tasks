@@ -1,5 +1,6 @@
 task_name: modify-windows-iso-file
-task_category: modify-windows-iso-file
+file_name: modify-windows-iso-file
+task_category: "Virtual Machines, KubeVirt"
 extract_iso_image: quay.io/kubevirt/tekton-tasks-disk-virt
 modify_iso_image: quay.io/kubevirt/tekton-tasks
 create_iso_image: quay.io/kubevirt/tekton-tasks

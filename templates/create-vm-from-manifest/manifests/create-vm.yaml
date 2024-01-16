@@ -3,33 +3,12 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
-    task.kubevirt.io/associatedServiceAccount: {{ sa_name }}
-{% if task_name == "create-vm-from-manifest" %}
-    manifest.params.task.kubevirt.io/type: {{ task_param_types.resource_yaml }}
-    manifest.params.task.kubevirt.io/kind: {{ task_param_types.vm_kind}}
-    manifest.params.task.kubevirt.io/apiVersion: {{ task_param_types.vm_version }}
-    namespace.params.task.kubevirt.io/type: {{ task_param_types.namespace }}
-{% elif task_name == "create-vm-from-template" %}
-    tekton.dev/deprecated: "true"
-    templateName.params.task.kubevirt.io/type: {{ task_param_types.vm_template_name }}
-    templateName.params.task.kubevirt.io/kind: {{ task_param_types.template_kind }}
-    templateName.params.task.kubevirt.io/apiVersion: {{ task_param_types.template_version }}
-    templateNamespace.params.task.kubevirt.io/type: {{ task_param_types.namespace }}
-    templateParams.params.task.kubevirt.io/type: {{ task_param_types.template_params_array }}
-    vmNamespace.params.task.kubevirt.io/type: {{ task_param_types.namespace }}
-{% endif %}
-    dataVolumes.params.task.kubevirt.io/kind: {{ task_param_types.datavolume_kind }}
-    dataVolumes.params.task.kubevirt.io/apiVersion: {{ task_param_types.cdi_beta_api_version }}
-    ownDataVolumes.params.task.kubevirt.io/kind: {{ task_param_types.datavolume_kind }}
-    ownDataVolumes.params.task.kubevirt.io/apiVersion: {{ task_param_types.cdi_beta_api_version }}
-    persistentVolumeClaims.params.task.kubevirt.io/kind: {{ task_param_types.pvc_kind }}
-    persistentVolumeClaims.params.task.kubevirt.io/apiVersion: {{ task_param_types.v1_version }}
-    ownPersistentVolumeClaims.params.task.kubevirt.io/kind: {{ task_param_types.pvc_kind }}
-    ownPersistentVolumeClaims.params.task.kubevirt.io/apiVersion: {{ task_param_types.v1_version }}
-    startVM.params.task.kubevirt.io/type: {{ task_param_types.boolean }}
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
   labels:
-    task.kubevirt.io/type: {{ task_name }}
-    task.kubevirt.io/category: {{ task_category }}
+    app.kubernetes.io/version: {{ version }}
+    artifacthub.io/category: {{ task_category }}
   name: {{ task_name }}
 spec:
   params:

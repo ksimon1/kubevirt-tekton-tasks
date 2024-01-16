@@ -1,3 +1,4 @@
 task_name: wait-for-vmi-status
-task_category: wait-for-vmi-status
+file_name: wait-for-vmi-status
+task_category: "Virtual Machines, KubeVirt"
 main_image: quay.io/kubevirt/tekton-tasks

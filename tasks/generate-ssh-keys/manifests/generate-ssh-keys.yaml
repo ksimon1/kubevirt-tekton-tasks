@@ -3,6 +3,9 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
     task.kubevirt.io/associatedServiceAccount: generate-ssh-keys-task
     publicKeySecretName.params.task.kubevirt.io/kind: Secret
     publicKeySecretName.params.task.kubevirt.io/apiVersion: v1
@@ -12,8 +15,9 @@ metadata:
     privateKeySecretNamespace.params.task.kubevirt.io/type: namespace
     privateKeyConnectionOptions.params.task.kubevirt.io/type: private-key-options-array
   labels:
+    app.kubernetes.io/version: v0.17.0
     task.kubevirt.io/type: generate-ssh-keys
-    task.kubevirt.io/category: generate-ssh-keys
+    task.kubevirt.io/category: Virtual Machines, KubeVirt
   name: generate-ssh-keys
 spec:
   params:

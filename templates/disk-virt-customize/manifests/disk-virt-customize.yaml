@@ -3,13 +3,12 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
-    pvc.params.task.kubevirt.io/kind: {{ task_param_types.pvc_kind }}
-    pvc.params.task.kubevirt.io/apiVersion: {{ task_param_types.v1_version }}
-    customizeCommands.params.task.kubevirt.io/type: {{ task_param_types.script }}
-    verbose.params.task.kubevirt.io/type: {{ task_param_types.boolean }}
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
   labels:
-    task.kubevirt.io/type: {{ task_name }}
-    task.kubevirt.io/category: {{ task_category }}
+    app.kubernetes.io/version: {{ version }}
+    artifacthub.io/category: {{ task_category }}
   name: {{ task_name }}
 spec:
   params:

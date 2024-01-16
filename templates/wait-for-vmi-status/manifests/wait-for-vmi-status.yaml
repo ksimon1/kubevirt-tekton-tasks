@@ -3,11 +3,12 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
-    task.kubevirt.io/associatedServiceAccount: {{ sa_name }}
-    vmiNamespace.params.task.kubevirt.io/type: namespace
+    artifacthub.io/maintainers: |
+      - name: Karel Simon
+        email: ksimon@redhat.com
   labels:
-    task.kubevirt.io/type: {{ task_name }}
-    task.kubevirt.io/category: {{ task_category }}
+    app.kubernetes.io/version: {{ version }}
+    artifacthub.io/category: {{ task_category }}
   name: {{ task_name }}
 spec:
   params:

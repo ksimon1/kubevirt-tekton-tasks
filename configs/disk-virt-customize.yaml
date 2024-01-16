@@ -1,3 +1,4 @@
 task_name: disk-virt-customize
-task_category: disk-virt-customize
+file_name: disk-virt-customize
+task_category: "Virtual Machines, KubeVirt"
 main_image: quay.io/kubevirt/tekton-tasks-disk-virt
