@@ -1,7 +1,8 @@
 module github.com/kubevirt/kubevirt-tekton-tasks
 
-go 1.21
-toolchain go1.22.2
+go 1.22.0
+
+toolchain go1.22.4
 
 // Kubernetes
 replace (
@@ -36,7 +37,7 @@ replace (
 // Openshift
 replace (
 	github.com/openshift/api => github.com/openshift/api v0.0.0-20231118005202-0f638a8a4705
-	github.com/openshift/client-go => github.com/openshift/client-go v0.0.0-20230120202327-72f107311084
+	github.com/openshift/client-go => github.com/openshift/client-go v0.0.0-20240528061634-b054aa794d87
 )
 
 require (
@@ -49,8 +50,8 @@ require (
 	github.com/spf13/cobra v1.8.0
 	github.com/tektoncd/pipeline v0.60.1
 	go.uber.org/zap v1.27.0
-	k8s.io/api v0.29.5
-	k8s.io/apimachinery v0.29.5
+	k8s.io/api v0.30.1
+	k8s.io/apimachinery v0.30.1
 	k8s.io/cli-runtime v0.24.2
 	k8s.io/client-go v12.0.0+incompatible
 	knative.dev/pkg v0.0.0-20240318073042-db6f3b074e8c
