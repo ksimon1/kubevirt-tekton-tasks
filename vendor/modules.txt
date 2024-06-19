@@ -344,8 +344,8 @@ github.com/openshift/api/pkg/serialization
 github.com/openshift/api/route/v1
 github.com/openshift/api/security/v1
 github.com/openshift/api/template/v1
-# github.com/openshift/client-go v3.9.0+incompatible => github.com/openshift/client-go v0.0.0-20230120202327-72f107311084
-## explicit; go 1.19
+# github.com/openshift/client-go v3.9.0+incompatible => github.com/openshift/client-go v0.0.0-20240528061634-b054aa794d87
+## explicit; go 1.22.0
 github.com/openshift/client-go/route/applyconfigurations/internal
 github.com/openshift/client-go/route/applyconfigurations/route/v1
 github.com/openshift/client-go/route/clientset/versioned/scheme
@@ -770,7 +770,7 @@ gopkg.in/yaml.v2
 # gopkg.in/yaml.v3 v3.0.1
 ## explicit
 gopkg.in/yaml.v3
-# k8s.io/api v0.29.5 => k8s.io/api v0.26.11
+# k8s.io/api v0.30.1 => k8s.io/api v0.26.11
 ## explicit; go 1.19
 k8s.io/api/admissionregistration/v1
 k8s.io/api/admissionregistration/v1alpha1
@@ -832,7 +832,7 @@ k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset
 k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/scheme
 k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/typed/apiextensions/v1
 k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/typed/apiextensions/v1beta1
-# k8s.io/apimachinery v0.29.5 => k8s.io/apimachinery v0.26.11
+# k8s.io/apimachinery v0.30.1 => k8s.io/apimachinery v0.26.11
 ## explicit; go 1.19
 k8s.io/apimachinery/pkg/api/equality
 k8s.io/apimachinery/pkg/api/errors
@@ -1485,4 +1485,4 @@ sigs.k8s.io/yaml/goyaml.v2
 # kubevirt.io/containerized-data-importer-api => kubevirt.io/containerized-data-importer-api v1.58.1
 # kubevirt.io/controller-lifecycle-operator-sdk/api => kubevirt.io/controller-lifecycle-operator-sdk/api v0.0.0-20220329064328-f3cc58c6ed90
 # github.com/openshift/api => github.com/openshift/api v0.0.0-20231118005202-0f638a8a4705
-# github.com/openshift/client-go => github.com/openshift/client-go v0.0.0-20230120202327-72f107311084
+# github.com/openshift/client-go => github.com/openshift/client-go v0.0.0-20240528061634-b054aa794d87
