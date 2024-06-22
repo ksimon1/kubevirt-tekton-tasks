@@ -1305,8 +1305,8 @@ kubevirt.io/api/pool
 kubevirt.io/api/pool/v1alpha1
 kubevirt.io/api/snapshot
 kubevirt.io/api/snapshot/v1alpha1
-# kubevirt.io/client-go v1.2.0 => kubevirt.io/client-go v1.2.0
-## explicit; go 1.17
+# kubevirt.io/client-go v1.2.2 => kubevirt.io/client-go v1.2.2
+## explicit; go 1.21
 kubevirt.io/client-go/generated/containerized-data-importer/clientset/versioned
 kubevirt.io/client-go/generated/containerized-data-importer/clientset/versioned/scheme
 kubevirt.io/client-go/generated/containerized-data-importer/clientset/versioned/typed/core/v1beta1
@@ -1317,6 +1317,7 @@ kubevirt.io/client-go/generated/external-snapshotter/clientset/versioned/typed/v
 kubevirt.io/client-go/generated/kubevirt/clientset/versioned
 kubevirt.io/client-go/generated/kubevirt/clientset/versioned/scheme
 kubevirt.io/client-go/generated/kubevirt/clientset/versioned/typed/clone/v1alpha1
+kubevirt.io/client-go/generated/kubevirt/clientset/versioned/typed/core/v1
 kubevirt.io/client-go/generated/kubevirt/clientset/versioned/typed/export/v1alpha1
 kubevirt.io/client-go/generated/kubevirt/clientset/versioned/typed/instancetype/v1alpha1
 kubevirt.io/client-go/generated/kubevirt/clientset/versioned/typed/instancetype/v1alpha2
@@ -1479,7 +1480,7 @@ sigs.k8s.io/yaml/goyaml.v2
 # sigs.k8s.io/kustomize/api => sigs.k8s.io/kustomize/api v0.11.4
 # sigs.k8s.io/kustomize/kyaml => sigs.k8s.io/kustomize/kyaml v0.13.6
 # kubevirt.io/api => kubevirt.io/api v1.2.0
-# kubevirt.io/client-go => kubevirt.io/client-go v1.2.0
+# kubevirt.io/client-go => kubevirt.io/client-go v1.2.2
 # kubevirt.io/kubevirt => kubevirt.io/kubevirt v1.2.0
 # kubevirt.io/containerized-data-importer => kubevirt.io/containerized-data-importer v1.58.1
 # kubevirt.io/containerized-data-importer-api => kubevirt.io/containerized-data-importer-api v1.58.1
