@@ -1,7 +1,8 @@
 module github.com/kubevirt/kubevirt-tekton-tasks
 
-go 1.21
-toolchain go1.22.2
+go 1.22
+
+toolchain go1.22.4
 
 // Kubernetes
 replace (
@@ -47,13 +48,13 @@ require (
 	github.com/openshift/api v3.9.0+incompatible
 	github.com/openshift/client-go v3.9.0+incompatible
 	github.com/spf13/cobra v1.8.0
-	github.com/tektoncd/pipeline v0.60.1
+	github.com/tektoncd/pipeline v0.61.0
 	go.uber.org/zap v1.27.0
-	k8s.io/api v0.29.5
-	k8s.io/apimachinery v0.29.5
+	k8s.io/api v0.29.6
+	k8s.io/apimachinery v0.29.6
 	k8s.io/cli-runtime v0.24.2
 	k8s.io/client-go v12.0.0+incompatible
-	knative.dev/pkg v0.0.0-20240318073042-db6f3b074e8c
+	knative.dev/pkg v0.0.0-20240416145024-0f34a8815650
 	kubevirt.io/api v1.2.0
 	kubevirt.io/client-go v1.2.0
 	kubevirt.io/containerized-data-importer v1.58.1
@@ -103,7 +104,7 @@ require (
 	github.com/google/gnostic v0.7.0 // indirect
 	github.com/google/gnostic-models v0.6.9-0.20230804172637-c7be7c783f49 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/go-containerregistry v0.19.1 // indirect
+	github.com/google/go-containerregistry v0.19.2 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/pprof v0.0.0-20240319011627-a57c5dfe54fd // indirect
 	github.com/google/uuid v1.6.0 // indirect
@@ -168,7 +169,7 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20240520151616-dc85e6b867a5 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240521202816-d264139d666e // indirect
 	google.golang.org/grpc v1.64.0 // indirect
-	google.golang.org/protobuf v1.34.1 // indirect
+	google.golang.org/protobuf v1.34.2 // indirect
 	gopkg.in/go-jose/go-jose.v2 v2.6.3 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
