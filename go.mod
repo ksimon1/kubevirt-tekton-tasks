@@ -22,7 +22,7 @@ replace (
 
 replace (
 	kubevirt.io/api => kubevirt.io/api v1.2.0
-	kubevirt.io/client-go => kubevirt.io/client-go v1.2.0
+	kubevirt.io/client-go => kubevirt.io/client-go v1.4.0
 	kubevirt.io/kubevirt => kubevirt.io/kubevirt v1.2.0
 )
 
@@ -55,7 +55,7 @@ require (
 	k8s.io/client-go v12.0.0+incompatible
 	knative.dev/pkg v0.0.0-20240318073042-db6f3b074e8c
 	kubevirt.io/api v1.2.0
-	kubevirt.io/client-go v1.2.0
+	kubevirt.io/client-go v1.4.0
 	kubevirt.io/containerized-data-importer v1.58.1
 	kubevirt.io/containerized-data-importer-api v1.58.1
 	kubevirt.io/kubevirt v1.2.0
