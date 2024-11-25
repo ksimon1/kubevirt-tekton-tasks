@@ -4,9 +4,9 @@ go 1.22.7
 
 // Kubernetes
 replace (
-	k8s.io/client-go => k8s.io/client-go v0.31.2
+	k8s.io/client-go => k8s.io/client-go v0.31.3
 	k8s.io/kube-openapi => k8s.io/kube-openapi v0.0.0-20240709000822-3c01b740850f
-	k8s.io/kubectl => k8s.io/kubectl v0.31.2
+	k8s.io/kubectl => k8s.io/kubectl v0.31.3
 	kubevirt.io/containerized-data-importer => kubevirt.io/containerized-data-importer v1.59.1
 	kubevirt.io/containerized-data-importer-api => kubevirt.io/containerized-data-importer-api v1.59.1
 )
@@ -29,9 +29,9 @@ require (
 	github.com/spf13/cobra v1.8.1
 	github.com/tektoncd/pipeline v0.65.2
 	go.uber.org/zap v1.27.0
-	k8s.io/api v0.31.2
-	k8s.io/apimachinery v0.31.2
-	k8s.io/cli-runtime v0.31.2
+	k8s.io/api v0.31.3
+	k8s.io/apimachinery v0.31.3
+	k8s.io/cli-runtime v0.31.3
 	k8s.io/client-go v12.0.0+incompatible
 	knative.dev/pkg v0.0.0-20240716082220-4355f0c73608
 	kubevirt.io/api v1.4.0
@@ -149,11 +149,11 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/apiextensions-apiserver v0.31.2 // indirect
-	k8s.io/apiserver v0.31.2 // indirect
+	k8s.io/apiextensions-apiserver v0.31.3 // indirect
+	k8s.io/apiserver v0.31.3 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
-	k8s.io/kube-aggregator v0.31.2 // indirect
-	k8s.io/kube-openapi v0.31.2 // indirect
+	k8s.io/kube-aggregator v0.31.3 // indirect
+	k8s.io/kube-openapi v0.31.3 // indirect
 	k8s.io/utils v0.0.0-20240711033017-18e509b52bc8 // indirect
 	kubevirt.io/controller-lifecycle-operator-sdk/api v0.2.4 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
