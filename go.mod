@@ -1,7 +1,8 @@
 module github.com/kubevirt/kubevirt-tekton-tasks
 
-go 1.21
-toolchain go1.22.2
+go 1.22
+
+toolchain go1.23.4
 
 // Kubernetes
 replace (
@@ -46,7 +47,7 @@ require (
 	github.com/onsi/gomega v1.32.0
 	github.com/openshift/api v3.9.0+incompatible
 	github.com/openshift/client-go v3.9.0+incompatible
-	github.com/spf13/cobra v1.8.0
+	github.com/spf13/cobra v1.8.1
 	github.com/tektoncd/pipeline v0.60.1
 	go.uber.org/zap v1.27.0
 	k8s.io/api v0.29.5
