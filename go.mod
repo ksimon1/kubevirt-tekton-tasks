@@ -36,7 +36,7 @@ replace (
 // Openshift
 replace (
 	github.com/openshift/api => github.com/openshift/api v0.0.0-20231118005202-0f638a8a4705
-	github.com/openshift/client-go => github.com/openshift/client-go v0.0.0-20230120202327-72f107311084
+	github.com/openshift/client-go => github.com/openshift/client-go 8e1f0b8fa9a7
 )
 
 require (
