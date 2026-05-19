@@ -15,7 +15,7 @@ func DownloadDiskImageFromURL(rawDiskUrl, headerKey, headerValue, certificatePat
 		fmt.Sprintf("header=%s: %s", headerKey, headerValue),
 		fmt.Sprintf("cainfo=%s", certificatePath),
 		"--run",
-		fmt.Sprintf("qemu-img convert \"$uri\" -O qcow2 %s", diskPath),
+		fmt.Sprintf("qemu-img convert \"$uri\" -p -O qcow2 %s", diskPath),
 	)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

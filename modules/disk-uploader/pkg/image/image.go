@@ -3,16 +3,19 @@ package image
 import (
 	"context"
 	"fmt"
-	"log"
 	"os"
 	"time"
 
 	"github.com/google/go-containerregistry/pkg/authn"
-	"github.com/google/go-containerregistry/pkg/crane"
+	"github.com/google/go-containerregistry/pkg/name"
 	v1 "github.com/google/go-containerregistry/pkg/v1"
 	"github.com/google/go-containerregistry/pkg/v1/empty"
 	"github.com/google/go-containerregistry/pkg/v1/mutate"
+	"github.com/google/go-containerregistry/pkg/v1/remote"
 	"github.com/google/go-containerregistry/pkg/v1/tarball"
+	"go.uber.org/zap"
+
+	"github.com/kubevirt/kubevirt-tekton-tasks/modules/shared/pkg/log"
 
 	tar "kubevirt.io/containerdisks/pkg/build"
 )
@@ -37,14 +40,12 @@ func DefaultConfig(labels map[string]string) v1.Config {
 func Build(diskPath string, config v1.Config) (v1.Image, error) {
 	layer, err := tarball.LayerFromOpener(tar.StreamLayerOpener(diskPath))
 	if err != nil {
-		log.Fatalf("Error creating layer from file: %v", err)
-		return nil, err
+		return nil, fmt.Errorf("error creating layer from file: %v", err)
 	}
 
 	image, err := mutate.AppendLayers(empty.Image, layer)
 	if err != nil {
-		log.Fatalf("Error appending layer: %v", err)
-		return nil, err
+		return nil, fmt.Errorf("error appending layer: %v", err)
 	}
 
 	configFile, err := image.ConfigFile()
@@ -64,14 +65,68 @@ func Push(image v1.Image, imageDestination string, pushTimeout int) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*time.Duration(pushTimeout))
 	defer cancel()
 
+	ref, err := name.ParseReference(imageDestination)
+	if err != nil {
+		return fmt.Errorf("error parsing image reference: %v", err)
+	}
+
+	// Get total image size for progress tracking by summing all layer sizes
+	layers, err := image.Layers()
+	if err != nil {
+		return fmt.Errorf("error getting image layers: %v", err)
+	}
+
+	var totalSize int64
+	for _, layer := range layers {
+		size, err := layer.Size()
+		if err != nil {
+			return fmt.Errorf("error getting layer size: %v", err)
+		}
+		totalSize += size
+	}
+
+	log.Logger().Info("Image size calculated", zap.Int64("total_bytes", totalSize), zap.Int("layer_count", len(layers)))
+
 	auth := &authn.Basic{
 		Username: os.Getenv("ACCESS_KEY_ID"),
 		Password: os.Getenv("SECRET_KEY"),
 	}
-	err := crane.Push(image, imageDestination, crane.WithAuth(auth), crane.WithContext(ctx))
+
+	progressChan := make(chan v1.Update, 100)
+	done := make(chan struct{})
+
+	go func() {
+		defer close(done)
+		for update := range progressChan {
+			if update.Error != nil {
+				log.Logger().Error("Upload error", zap.Error(update.Error))
+				continue
+			}
+
+			if update.Complete > 0 && totalSize > 0 {
+				percentage := float64(update.Complete) / float64(totalSize) * 100
+				log.Logger().Info("Pushing image progress",
+					zap.Float64("percentage", percentage),
+					zap.Int64("bytes_uploaded", update.Complete),
+					zap.Int64("total_bytes", totalSize))
+			} else if update.Complete > 0 {
+				log.Logger().Info("Pushing image", zap.Int64("bytes_uploaded", update.Complete))
+			}
+		}
+	}()
+
+	err = remote.Write(ref, image,
+		remote.WithAuth(auth),
+		remote.WithContext(ctx),
+		remote.WithProgress(progressChan),
+	)
+
+	// Wait for the progress goroutine to finish processing all updates
+	// The library closes progressChan, which will cause the goroutine to exit
+	<-done
+
 	if err != nil {
-		log.Fatalf("Error pushing image: %v", err)
-		return err
+		return fmt.Errorf("error pushing image: %v", err)
 	}
 	return nil
 }
