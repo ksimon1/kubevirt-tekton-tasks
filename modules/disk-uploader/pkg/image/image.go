@@ -97,6 +97,7 @@ func Push(image v1.Image, imageDestination string, pushTimeout int) error {
 
 	go func() {
 		defer close(done)
+		lastPercentage := -1
 		for update := range progressChan {
 			if update.Error != nil {
 				log.Logger().Error("Upload error", zap.Error(update.Error))
@@ -104,11 +105,14 @@ func Push(image v1.Image, imageDestination string, pushTimeout int) error {
 			}
 
 			if update.Complete > 0 && totalSize > 0 {
-				percentage := float64(update.Complete) / float64(totalSize) * 100
-				log.Logger().Info("Pushing image progress",
-					zap.Float64("percentage", percentage),
-					zap.Int64("bytes_uploaded", update.Complete),
-					zap.Int64("total_bytes", totalSize))
+				percentage := int(float64(update.Complete) / float64(totalSize) * 100)
+				if percentage != lastPercentage {
+					lastPercentage = percentage
+					log.Logger().Info("Pushing image progress",
+						zap.Int("percentage", percentage),
+						zap.Int64("bytes_uploaded", update.Complete),
+						zap.Int64("total_bytes", totalSize))
+				}
 			} else if update.Complete > 0 {
 				log.Logger().Info("Pushing image", zap.Int64("bytes_uploaded", update.Complete))
 			}
