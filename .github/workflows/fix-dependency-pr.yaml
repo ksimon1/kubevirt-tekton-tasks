@@ -1,0 +1,115 @@
+name: Fix Dependency PR
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+      - 'release-v*'
+
+jobs:
+  fix:
+    if: |
+      github.actor == 'dependabot[bot]' ||
+      github.actor == 'renovate[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.ACTIONS_TOKEN }}
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Check Go version bump on release branches
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          BASE_GO=$(git show origin/${{ github.base_ref }}:go.mod | grep '^go ' | awk '{print $2}')
+          PR_GO=$(grep '^go ' go.mod | awk '{print $2}')
+          BASE_BRANCH="${{ github.base_ref }}"
+          if [ "$BASE_GO" != "$PR_GO" ] && [ "$BASE_BRANCH" != "main" ]; then
+            echo "::error::Go version bumped from $BASE_GO to $PR_GO in a release branch ($BASE_BRANCH). Go version updates are not allowed on release branches."
+            exit 1
+          fi
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - name: Run make vendor (go mod tidy + go mod vendor)
+        run: make vendor
+
+      - name: Commit deterministic fixes
+        id: commit_fixes
+        run: |
+          git add -A
+          if git diff --staged --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git commit --signoff -m "chore: run go mod tidy and vendor for dependency update"
+            git push
+          fi
+
+      - name: Build check
+        id: build_check
+        run: go build ./...
+        continue-on-error: true
+
+      - name: AI fix compilation errors
+        if: steps.build_check.outcome == 'failure'
+        uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ vars.ANTHROPIC_API_KEY }}
+          direct_prompt: |
+            This is a dependency update PR (${{ github.event.pull_request.html_url }}).
+            The project is a Go project that uses a vendor directory (GOFLAGS=-mod=vendor).
+
+            `go mod tidy && go mod vendor` have already been run. The remaining problem is
+            compilation errors caused by API changes in the updated dependencies.
+
+            Steps to follow:
+            1. Run `go build ./...` to see current errors.
+            2. Fix ONLY compilation errors — renamed/removed types, changed function signatures,
+               import path changes. Do not refactor, change logic, or add features.
+            3. Do NOT modify the `go` directive in go.mod.
+            4. After fixing, run `go mod tidy && go mod vendor` once more to keep vendor in sync.
+            5. Run `make test` to verify unit tests still pass.
+            6. Commit all changes:
+               git add -A
+               git commit --signoff -m "chore: fix compilation errors from dependency update"
+               git push
+
+      - name: Post summary comment
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.ACTIONS_TOKEN }}
+          script: |
+            const buildFailed = '${{ steps.build_check.outcome }}' === 'failure';
+            const changed     = '${{ steps.commit_fixes.outputs.changed }}' === 'true';
+
+            const lines = ['### Dependency PR auto-fix', ''];
+            if (changed)
+              lines.push('✅ Ran `make vendor` (`go mod tidy && go mod vendor`) and pushed the result.', '');
+            if (buildFailed)
+              lines.push('🤖 Build still failed after vendoring — Claude Code was invoked to fix compilation errors.', '');
+            if (!changed && !buildFailed)
+              lines.push('✅ No issues found — vendor is up to date and the build passes.');
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: lines.join('\n'),
+            });
