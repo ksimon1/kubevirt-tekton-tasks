@@ -37,10 +37,6 @@
       "enabled": false
     }
   ],
-  "postUpgradeTasks": {
-    "commands": ["make vendor", "make test"],
-    "executionMode": "branch"
-  },
   "vulnerabilityAlerts": {
     "enabled": true
   },
