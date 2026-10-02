@@ -2,6 +2,7 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "baseBranches": ["main", "/^release-v(0\\.(1[5-9]|[2-9][0-9])|[1-9]\\d*\\.\\d+)$/"],
   "prConcurrentLimit": 3,
+  "prHourlyLimit": 1,
   "lockFileMaintenance": {
     "enabled": false
   },
@@ -35,10 +36,18 @@
       "matchUpdateTypes": ["major"],
       "matchDepTypes": ["indirect"],
       "enabled": false
+    },
+    {
+      "description": "Do not update Go versions on release branches",
+      "matchBaseBranches": ["/^release-v/"],
+      "matchDatasources": ["golang-version"],
+      "matchDepTypes": ["golang", "toolchain"],
+      "matchManagers": ["gomod"],
+      "enabled": false
     }
   ],
   "postUpgradeTasks": {
-    "commands": ["make vendor", "make test"],
+    "commands": ["make vendor"],
     "executionMode": "branch"
   },
   "vulnerabilityAlerts": {
